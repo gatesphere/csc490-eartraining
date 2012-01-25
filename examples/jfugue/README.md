@@ -9,9 +9,11 @@ This program takes in a textfile as an input, and translates that file
 into "music" by way of analyzing the string tokens that make up the file.
 
 Compilation:
+
     javac -cp ../../lib/jfugue.jar:. Wordsongs.java
 
 Running:
+
     java -cp ../../lib/jfugue.jar:. Wordsongs anInputFile.txt
 
 ## LCompose
@@ -20,8 +22,10 @@ Systems, a formalism that we'll also need to look at for one of the modules
 in the assignment.
 
 Compilation:
+
     javac -cp ../../lib/jfugue.jar:. LCompose.java
 
 Running:
+
     java -cp ../../lib/jfugue.jar:. LCompose
 
