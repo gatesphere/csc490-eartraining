@@ -10,7 +10,7 @@ public class XMLFormatter {
   public void newTag(String name, String value) {
     XMLTag temp = new XMLTag(name, value);
     this.lookuptable.put(name, temp);
-    this.doc.addTag(newtag);
+    this.doc.addTag(temp);
   }
   
   public void newTag(String name) {
@@ -40,6 +40,67 @@ public class XMLFormatter {
     int depth = 0;
     StringBuilder out = new StringBuilder();
     out.append(this.doc.header + "\n");
-    // stub
+    List<XMLTag> roottags = this.doc.getTags();
+    for(XMLTag t : roottags) {
+      out.append(this.processTag(depth, t));
+    }
+    return out.toString();
+  }
+  
+  private String processTag(int depth, XMLTag tag) {
+    StringBuilder out = new StringBuilder();
+    String padding = this.spacePadding(depth);
+    out.append(padding + tag.openTag());
+    if(tag.numTags() != 0) {
+      out.append("\n");
+      for(XMLTag t : tag.nestedTags()) {
+        out.append(this.processTag(depth + 1, t));
+      }
+      out.append(padding);
+    } else {
+      out.append(tag.getValue());
+    }
+    out.append(tag.closeTag() + "\n");
+    return out.toString();
+  }
+  
+  private String spacePadding(int depth) {
+    StringBuilder out = new StringBuilder();
+    for(int i = 0; i < depth; i++) {
+      out.append("  ");
+    }
+    return out.toString();
   }
 }
+
+
+
+/*
+class XMLTest {
+
+ // this test should create a document that looks like this:
+ //
+ // <?xml version="1.0" encoding="ISO-8859-1"?>
+ // <note>
+ //   <from>Me</from>
+ //   <to>You</to>
+ //   <body>
+ //     <subject>hello there!</subject>
+ //     <content>What's up?</content>
+ //   </body>
+ // </note>
+
+
+  public static void main(String[] args) {
+    XMLFormatter format = new XMLFormatter();
+    format.newTag("note");
+    format.addNestedTag("note", "from", "Me");
+    format.addNestedTag("note", "to", "You");
+    format.addNestedTag("note", "body");
+    format.addNestedTag("body", "subject", "hello there!");
+    format.addNestedTag("body", "content", "What's up?");
+    
+    System.out.println(format);
+  }
+}
+*/

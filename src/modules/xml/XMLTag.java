@@ -27,7 +27,7 @@ public class XMLTag {
     return this.tags;
   }
   
-  public integer numTags() {
+  public int numTags() {
     return this.tags.size();
   }
   
