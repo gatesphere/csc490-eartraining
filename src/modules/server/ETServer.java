@@ -15,6 +15,9 @@ import java.io.*;
 import java.util.concurrent.*;
 
 public class ETServer {
+  public static int max_connections;
+  public static int active_connections;
+
   public static void main(String[] args) {
     if(args.length < 2) {
       System.out.println("usage: java ETServer <port_number> <maximum_connections>");
@@ -26,8 +29,8 @@ public class ETServer {
     
     
     int portnum = Integer.parseInt(args[0]);
-    int max_connections = Integer.parseInt(args[1]);
-    int active_connections = 0;
+    max_connections = Integer.parseInt(args[1]);
+    active_connections = 0;
     
     UserTable usertable;
     
@@ -187,6 +190,7 @@ class CommAgent implements Runnable {
       //out.println("Overall message is:" + input); // send ACK?
 
       server.close();
+      ETServer.active_connections--;
     }
     catch (Exception ex) {ex.printStackTrace();}
   }
