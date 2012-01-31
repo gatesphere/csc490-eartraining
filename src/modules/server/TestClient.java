@@ -4,29 +4,30 @@ import java.net.*;
 import java.util.*;
 import java.io.*;
 
-public class TestClient {
+public class TestClient {  
   public static void main(String[] args) {
-    if(args.length != 1) {
-      System.out.println("usage: java TestClient <port_number>");
+    if(args.length != 2) {
+      System.out.println("usage: java TestClient <port_number> <test_num>");
       System.exit(-1);
     }
     
     int portnum = Integer.parseInt(args[0]);
+    int num_tests = Integer.parseInt(args[1]);
     
-    testAuth(portnum);
-    testXMLDump(portnum);
-    testIncorrectFormat(portnum);
+    testAuth(portnum, num_tests);
+    testXMLDump(portnum, num_tests);
+    testIncorrectFormat(portnum, num_tests);
 
     System.out.println("Tests complete.");
   }
   
-  public static void testAuth(int portnum) {
+  public static void testAuth(int portnum, int num_tests) {
     System.out.println("Testing authentication.");
     Socket socket;
     BufferedReader in;
     PrintStream out;
     String user, pass, output, ack;
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < num_tests; i++) {
       try {
         user = generateString(20);
         pass = generateString(20);
@@ -38,6 +39,7 @@ public class TestClient {
         output = "USERAUTH\n" + user + "\n" + pass + "\n" + "\n";
         out.print(output);
         ack = in.readLine();
+        socket.close();
         if(!ack.equals("SUCCESS")) {
           System.out.println("FAILURE ON AUTH!");
           break;
@@ -50,6 +52,7 @@ public class TestClient {
         output = "USERAUTH\n" + user + "\n" + pass + "\n" + "\n";
         out.print(output);
         ack = in.readLine();
+        socket.close();
         if(!ack.equals("SUCCESS")) {
           System.out.println("FAILURE ON AUTH!");
           break;
@@ -63,6 +66,7 @@ public class TestClient {
         output = "USERAUTH\n" + user + "\n" + pass + "\n" + "\n";
         out.print(output);
         ack = in.readLine();
+        socket.close();
         if(!ack.equals("FAILURE")) {
           System.out.println("FAILURE ON AUTH!");
           break;
@@ -71,27 +75,38 @@ public class TestClient {
     }
   }
   
-  public static void testXMLDump(int portnum) {
+  public static void testXMLDump(int portnum, int num_tests) {
     System.out.println("Testing XML Dump.");
-    for (int i = 0; i < 100; i++) {
-      // connect
-      // send textblock
+    for (int i = 0; i < num_tests; i++) {
+      try {
+      String text;
+      Socket socket;
+      PrintStream out;
+        text = "XMLDUMP\n<xml>" + generateString(15) + "</xml>\n\n";
+        // connect
+        socket = new Socket("localhost",portnum);
+        out = new PrintStream(socket.getOutputStream());
+        // send text block
+        out.println(text);
+        socket.close();
+      } catch (Exception ex) {ex.printStackTrace();}
     }
   }
   
-  public static void testIncorrectFormat(int portnum) {
+  public static void testIncorrectFormat(int portnum, int num_tests) {
     System.out.println("Testing incorrect format.");
     String gibberish;
     Socket socket;
     PrintStream out;
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < num_tests; i++) {
       try {
         gibberish = generateString(50);
-        //.connect
+        // connect
         socket = new Socket("localhost",portnum);
         out = new PrintStream(socket.getOutputStream());
         // send gibberish
         out.println(gibberish);
+        socket.close();
       } catch (Exception ex) {ex.printStackTrace();}
     }
   }

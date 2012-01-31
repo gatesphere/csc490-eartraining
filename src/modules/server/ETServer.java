@@ -13,10 +13,11 @@ import java.util.*;
 import java.net.*;
 import java.io.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.*;
 
 public class ETServer {
   public static int max_connections;
-  public static int active_connections;
+  public static AtomicInteger active_connections;
 
   public static void main(String[] args) {
     if(args.length < 2) {
@@ -30,7 +31,7 @@ public class ETServer {
     
     int portnum = Integer.parseInt(args[0]);
     max_connections = Integer.parseInt(args[1]);
-    active_connections = 0;
+    active_connections = new AtomicInteger(0);
     
     UserTable usertable;
     
@@ -50,12 +51,15 @@ public class ETServer {
         })
       );
       
-      while((active_connections++ < max_connections) 
-             || (max_connections == 0)) {
-        
-        sock = ss.accept();
-        CommAgent connection = new CommAgent(sock);
-        new Thread(connection).start();
+      for(;;) {
+        while((active_connections.get() < max_connections) 
+               || (max_connections == 0)) {
+          //System.out.println("    currently " + active_connections.get() + " active connections.");
+          sock = ss.accept();
+          active_connections.incrementAndGet();
+          CommAgent connection = new CommAgent(sock);
+          new Thread(connection).start();
+        }
       }
     }
     catch (Exception ex) {ex.printStackTrace();}
@@ -90,7 +94,7 @@ class UserTable { // singleton
     
     System.out.println("User Table initialized.");
     
-    UserTable.startFileWriter(5); // update file every 5 minutes
+    UserTable.startFileWriter(60); // update file every 60 minutes
   }
   
   public static UserTable getInstance() {
@@ -163,6 +167,7 @@ class CommAgent implements Runnable {
       // read stream
       line = in.readLine();
       if(line == null) {server.close(); return;}; // keep-alive connection.  No point.
+      
       if(line.equals("USERAUTH")) {
         // auth stuff
         System.out.println("User Auth.");
@@ -171,31 +176,32 @@ class CommAgent implements Runnable {
         boolean retval = false;
         if(user == null || pass == null)
           retval = false;
-         else
+        else
           retval = usertable.auth(user, pass);
         if(retval)
           out.print("SUCCESS");
         else
           out.print("FAILURE");
-      } else if(line.equals("XMLDUMP")) {
+      }
+      
+      else if(line.equals("XMLDUMP")) {
         // XML dump
         System.out.println("XML Dump.");
         while((line = in.readLine()) != null && !line.isEmpty()) {
-          input = input + line;
-          System.out.println("I got:" + line); // server-side confirmation, for testing
+          input = input + "\n" + line;
+          //System.out.println("I got:" + line); // server-side confirmation, for testing
         }
-      } else {
-        // unknown
-        System.out.println("Not sure what you're trying to do here...");
       }
-
-      //System.out.println("Overall message is:" + input);
       
+      else {
+        // unknown
+        System.out.println("Invalid message format.");
+      }     
       
-      //out.println("Overall message is:" + input); // send ACK?
-
+      //System.out.println("  Closing socket...");
       server.close();
-      ETServer.active_connections--;
+      //System.out.println("  Socket closed.  " + ETServer.active_connections.get() + " active connections.");
+      ETServer.active_connections.decrementAndGet();
     }
     catch (Exception ex) {ex.printStackTrace();}
   }
