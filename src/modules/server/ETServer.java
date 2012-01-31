@@ -157,16 +157,26 @@ class CommAgent implements Runnable {
       BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
       PrintStream out = new PrintStream(server.getOutputStream());
 
+      // get UserTable
+      UserTable usertable = UserTable.getInstance();
+      
       // read stream
       line = in.readLine();
       if(line == null) {server.close(); return;}; // keep-alive connection.  No point.
       if(line.equals("USERAUTH")) {
         // auth stuff
         System.out.println("User Auth.");
-        while((line = in.readLine()) != null && !line.isEmpty()) {
-          input = input + line;
-          System.out.println("I got:" + line); // server-side confirmation, for testing
-        }
+        String user = in.readLine();
+        String pass = in.readLine();
+        boolean retval = false;
+        if(user == null || pass == null)
+          retval = false;
+         else
+          retval = usertable.auth(user, pass);
+        if(retval)
+          out.print("SUCCESS");
+        else
+          out.print("FAILURE");
       } else if(line.equals("XMLDUMP")) {
         // XML dump
         System.out.println("XML Dump.");
@@ -177,14 +187,9 @@ class CommAgent implements Runnable {
       } else {
         // unknown
         System.out.println("Not sure what you're trying to do here...");
-        System.out.println("I got:" + line);
-        while((line = in.readLine()) != null && !line.isEmpty()) {
-          input = input + line;
-          System.out.println("I got:" + line); // server-side confirmation, for testing
-        }
       }
 
-      System.out.println("Overall message is:" + input);
+      //System.out.println("Overall message is:" + input);
       
       
       //out.println("Overall message is:" + input); // send ACK?

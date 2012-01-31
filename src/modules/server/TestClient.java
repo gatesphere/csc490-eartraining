@@ -25,7 +25,7 @@ public class TestClient {
     Socket socket;
     BufferedReader in;
     PrintStream out;
-    String user, pass, output;
+    String user, pass, output, ack;
     for (int i = 0; i < 100; i++) {
       try {
         user = generateString(20);
@@ -37,10 +37,36 @@ public class TestClient {
         // register
         output = "USERAUTH\n" + user + "\n" + pass + "\n" + "\n";
         out.print(output);
+        ack = in.readLine();
+        if(!ack.equals("SUCCESS")) {
+          System.out.println("FAILURE ON AUTH!");
+          break;
+        }
         // connect
+        socket = new Socket("localhost",portnum);
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        out = new PrintStream(socket.getOutputStream());
         // auth
+        output = "USERAUTH\n" + user + "\n" + pass + "\n" + "\n";
+        out.print(output);
+        ack = in.readLine();
+        if(!ack.equals("SUCCESS")) {
+          System.out.println("FAILURE ON AUTH!");
+          break;
+        }
         // connect
+        socket = new Socket("localhost",portnum);
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        out = new PrintStream(socket.getOutputStream());
         // auth with incorrect password
+        pass = generateString(20);
+        output = "USERAUTH\n" + user + "\n" + pass + "\n" + "\n";
+        out.print(output);
+        ack = in.readLine();
+        if(!ack.equals("FAILURE")) {
+          System.out.println("FAILURE ON AUTH!");
+          break;
+        }
       } catch (Exception ex) {ex.printStackTrace();}
     }
   }
@@ -55,9 +81,18 @@ public class TestClient {
   
   public static void testIncorrectFormat(int portnum) {
     System.out.println("Testing incorrect format.");
+    String gibberish;
+    Socket socket;
+    PrintStream out;
     for (int i = 0; i < 100; i++) {
-      //.connect
-      // send gibberish
+      try {
+        gibberish = generateString(50);
+        //.connect
+        socket = new Socket("localhost",portnum);
+        out = new PrintStream(socket.getOutputStream());
+        // send gibberish
+        out.println(gibberish);
+      } catch (Exception ex) {ex.printStackTrace();}
     }
   }
   
