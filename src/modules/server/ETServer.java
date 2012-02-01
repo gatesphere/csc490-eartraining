@@ -28,6 +28,7 @@ public class ETServer {
       System.exit(-1);
     }
     
+    new File("xml").mkdirs(); // create XML out directory
     
     int portnum = Integer.parseInt(args[0]);
     max_connections = Integer.parseInt(args[1]);
@@ -148,6 +149,8 @@ class UserTable { // singleton
 class CommAgent implements Runnable {
   private Socket server;
   private String line, input;
+  private static String filesep = System.getProperty("file.separator");
+
 
   public CommAgent(Socket server) {
     this.server=server;
@@ -189,8 +192,12 @@ class CommAgent implements Runnable {
         System.out.println("XML Dump.");
         while((line = in.readLine()) != null && !line.isEmpty()) {
           input = input + "\n" + line;
-          //System.out.println("I got:" + line); // server-side confirmation, for testing
         }
+        File outfile = new File("xml" + filesep + UUID.randomUUID().toString() + ".xml");
+        FileWriter writer = new FileWriter(outfile, false);
+        writer.write(input + "\n");
+        writer.flush();
+        writer.close();
       }
       
       else {
