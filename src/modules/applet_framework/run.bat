@@ -1,0 +1,3 @@
+
+echo Running...
+appletviewer applet.html

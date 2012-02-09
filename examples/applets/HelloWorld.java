@@ -2,8 +2,9 @@
 
 import java.applet.*;
 import java.awt.*;
+import javax.swing.*;
 
-public class HelloWorld extends Applet {
+public class HelloWorld extends JApplet {
   public void init() {
     // does nothing, called when the applet starts
   }
