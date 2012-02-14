@@ -14,6 +14,8 @@ import java.net.*;
 import java.io.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
+//import javax.xml.*;
+//import org.xml.sax.helpers.*;
 
 public class ETServer {
   public static int max_connections;
@@ -190,10 +192,18 @@ class CommAgent implements Runnable {
       else if(line.equals("XMLDUMP")) {
         // XML dump
         System.out.println("XML Dump.");
+        String username = null;
         while((line = in.readLine()) != null && !line.isEmpty()) {
           input = input + "\n" + line;
+          if(line.contains("<username>")) 
+            String username = line.substring(line.indexOf("<username>") + 10, line.indexOf("</username>"));
         }
-        File outfile = new File("xml" + filesep + UUID.randomUUID().toString() + ".xml");
+        if (username == null) { // error
+          writer.close();
+          return;
+        }
+        File outfile = new File("xml" + filesep + username + filesep + UUID.randomUUID().toString() + ".xml");
+        outfile.mkdirs();
         FileWriter writer = new FileWriter(outfile, false);
         writer.write(input + "\n");
         writer.flush();
