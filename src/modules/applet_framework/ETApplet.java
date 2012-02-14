@@ -11,8 +11,8 @@ import javax.imageio.*;
 import java.util.*;
 
 public class ETApplet extends JApplet {
-  private JPanel cardpanel = new JPanel(new CardLayout());
-  private Map<String, ActivityCard> cards = new HashMap<String, ActivityCard>();
+  private static JPanel cardpanel = new JPanel(new CardLayout());
+  private static Map<String, ActivityCard> cards = new HashMap<String, ActivityCard>();
   
   public void init() {
     System.out.println("Initializing...");
@@ -32,18 +32,18 @@ public class ETApplet extends JApplet {
     // stub
   }
   
-  public void switchToCard(String cardname) {
+  public static void switchToCard(String cardname) {
     CardLayout cl = (CardLayout)(cardpanel.getLayout());
     cl.show(cardpanel, cardname);
     initializeCard(cardname);
   }
   
-  public void addCard(ActivityCard card, String cardname) {
+  public static void addCard(ActivityCard card, String cardname) {
     cardpanel.add(card, cardname);
     cards.put(cardname, card);
   }
   
-  public void initializeCard(String cardname) {
+  public static void initializeCard(String cardname) {
     cards.get(cardname).initializeThisCard();
   }
   
