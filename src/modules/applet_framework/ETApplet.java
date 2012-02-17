@@ -56,6 +56,15 @@ public class ETApplet extends JApplet {
     
     addCard(welcomeCard, "welcome");
     
+    // menu card
+    
+    // options card
+    
+    // assessment card
+    ActivityCard assessmentCard = new ActivityCard(new FlowLayout(FlowLayout.CENTER));
+    assessmentCard.add(new JLabel("<html><h1>Assessment</h1></html>"));
+    
+    // activity cards
     
     // don't touch this stuff
     this.getContentPane().add(cardpanel);
