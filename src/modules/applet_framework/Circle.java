@@ -3,60 +3,61 @@ import java.util.*;
 import javax.swing.*;
 import org.jfugue.*;
 
-public class Circle {
+public class Circle extends JPanel {
 	
-	double x, y;	//Circle's center
-	double radius;	//Circle's radius
-	double rim;	//Outer Circle's Width
+	int x, y;	//Circle's center
+	int radius;	//Circle's radius
+	int rim;	//Outer Circle's Width
 	Color color;	//Circle's color
-	Note note; //Circle's note
+	String note; //Circle's note
 
-	public Circle(double x, double y) {
+
+	public Circle(int x, int y) {
 		this.x = x;
 		this.y = y;
-		radius = 65.0;
-		rim = 20.0;
+		radius = 50;
+		rim = 20;
 		color = Color.BLACK;
-		note = new Note((byte)60);
+		note = "C4";
 	}
 
-	public Circle(double x, double y, double radius) {
+	public Circle(int x, int y, int radius) {
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
-		rim = 20.0;
+		rim = 20;
 		color = Color.BLACK;
-		note = new Note((byte)60);
+		note = "C4";
 	}
 	
-	public Circle(double x, double y, Note note) {
+	public Circle(int x, int y, String note) {
 		this.x = x;
 		this.y = y;
-		radius = 65.0;
-		rim = 20.0;
+		radius = 50;
+		rim = 20;
 		color = Color.BLACK;
 		this.note = note;
 	}
 	
-	public Circle(double x, double y, double radius, double rim) {
+	public Circle(int x, int y, int radius, int rim) {
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
 		this.rim = rim;
 		color = Color.BLACK;
-		note = new Note((byte)60);
+		note = "C4";
 	}
 	
-	public Circle(double x, double y, double radius, double rim, Color color) {
+	public Circle(int x, int y, int radius, int rim, Color color) {
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
 		this.rim = rim;
 		this.color = color;
-		note = new Note((byte)60);
+		note = "C4";
 	}
 	
-	public Circle(double x, double y, double radius, double rim, Note note) {
+	public Circle(int x, int y, int radius, int rim, String note) {
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
@@ -65,7 +66,7 @@ public class Circle {
 		this.note = note;
 	}
 	
-	public Circle(double x, double y, double radius, double rim, Color color, Note note) {
+	public Circle(int x, int y, int radius, int rim, Color color, String note) {
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
@@ -82,33 +83,33 @@ public class Circle {
 		return color;
 	}
 
-	public void setRadius(double radius) {
+	public void setRadius(int radius) {
 		this.radius = radius;
 	}
 
-	public double getRadius() {
+	public int getRadius() {
 		return radius;
 	}
 
-	public void setRim(double rim) {
+	public void setRim(int rim) {
 		this.rim = rim;
 	}
 
-	public void setPosition(double x, double y) {
+	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public double[] getPosition() {
-		double[] xy = {x,y};
+	public int[] getPosition() {
+		int[] xy = {x,y};
 		return xy;
 	}
 
-	public void setNote(Note note) {
+	public void setNote(String note) {
 		this.note = note;
 	}
 
-	public Note getNote() {
+	public String getNote() {
 		return note;
 	}
 

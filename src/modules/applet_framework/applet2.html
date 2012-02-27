@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Ear Training Applet test</title>
+		<script language = "javascript">
+		var d=document;
+		var winWidth, WinHeight;
+		if (typeof window.innerWidth!='undefined') { 
+						winWidth = window.innerWidth; var winHeight = window.innerHeight; 
+		} else if (d.documentElement && typeof d.documentElement.clientWidth!='undefined' && d.documentElement.clientWidth!=0) { 
+			winWidth = d.documentElement.clientWidth; winHeight = d.documentElement.clientHeight; 
+		} else if (d.body && typeof d.body.clientWidth!='undefined') { 
+		winWidth = d.body.clientWidth; winHeight = d.body.clientHeight; 
+		} else { 
+			winWidth=1024; winHeight=768; 
+		}
+		</script>
+  </head>
+	<body>
+		<center>
+		<script language="Javascript">
+			document.write("<applet code=ETApplet.class width=" + winWidth +
+				" height=" + winHeight + "> You don't support applets! Sorry. :( </applet> <br>" );
+		</script>	
+		</center>
+  </body>
+</html>

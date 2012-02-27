@@ -12,6 +12,7 @@ import java.util.*;
 import org.jfugue.*;
 
 public class ETApplet extends JApplet {
+	static final Player player = new Player();;
   private static JPanel cardpanel = new JPanel(new CardLayout());
   private static Map<String, ActivityCard> cards = new HashMap<String, ActivityCard>();
   
@@ -24,10 +25,7 @@ public class ETApplet extends JApplet {
   static java.util.List<String> tonics = new ArrayList<String>(Arrays.asList(tonicsArray));
   static java.util.List<Byte> instruments = new ArrayList<Byte>(Arrays.asList(instrumentsArray));
 
-	/* Eventually we're likely going to want tonic to be in bytes, 
-	   in JFugue Note takes byte as parameter ie "new Note((byte)60);" creates new note at C5
-		 we could probably use a map for readability, "put("C4",48);" etc...*/
-	static Byte selectedTonic; 
+	static String selectedTonic; 
 	static Byte selectedInstrument;
   
   public void init() {
@@ -67,7 +65,6 @@ public class ETApplet extends JApplet {
   
   
   public void createGUI() {
-    
     // add cards here
     ActivityCard welcomeCard = new ActivityCard(new FlowLayout(FlowLayout.CENTER));
     welcomeCard.add(new JLabel("<html><h1>Welcome to ETApplet</h1></html>"));
@@ -82,7 +79,7 @@ public class ETApplet extends JApplet {
     //addCard(optionsCard, "options");
     
     // assessment card
-    AssessmentCard assessmentCard = new AssessmentCard();
+    AssessmentCard assessmentCard = new AssessmentCard(); //to do: add params: selectedTonic, selectedInstrument
 		addCard(assessmentCard, "assessment");
     
     // activity cards
