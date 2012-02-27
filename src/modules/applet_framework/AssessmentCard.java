@@ -9,23 +9,19 @@ import org.jfugue.*;
 public class AssessmentCard extends ActivityCard {
   
 	//variables
-	ArrayList<Circle> circles;
+	ArrayList<Circle> circles = new ArrayList<Circle>();
 	int level;
-	byte instrument;
-	byte tonic;
+	//instrument and tonic won't be hard coded in future
+	byte instrument = 0;
+	byte tonic = 60;
 							
 	public void initializeThisCard() {
     System.out.println("Initializing pane...");
-		ArrayList<Circle> circles = new ArrayList<Circle>();
 		level = 0;
 		assemble();
   }
   
-  public AssessmentCard(byte instrument, byte tonic) {
-    super();
-		this.instrument = instrument;
-		this.tonic = tonic;
-  }
+  public AssessmentCard() {}
   
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -34,19 +30,19 @@ public class AssessmentCard extends ActivityCard {
 	}
 
 	public void assemble() {
-		double x = getSize().getWidth();
-		double y = getSize().getHeight();
+		double x = getSize().getWidth()/2;
+		double y = getSize().getHeight()/2;
 		int t = tonic;
-		circles.add(new Circle(x,y,35.0,5.0,new Note(tonic)));
+		circles.add(new Circle(x,y,75.0,20.0,new Note(tonic)));
 		for (int i = 1; i <= 4 + (2 * level); i++) {
 			if (i % 2 == 0) {
 				if (i < 5) t = tonic + i;
 				else t = tonic + i - 1;
-				x += i * 100;
+				x += i * 150;
 			} else {
 				if (i < 8)	t = tonic - i;
 				else t = tonic - i + 1;
-				x -= i * 100;
+				x -= i * 150;
 			}
 			circles.add(new Circle(x,y,new Note((byte)t)));
 		}

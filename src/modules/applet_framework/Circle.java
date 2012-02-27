@@ -14,8 +14,8 @@ public class Circle {
 	public Circle(double x, double y) {
 		this.x = x;
 		this.y = y;
-		radius = 25.0;
-		rim = 5.0;
+		radius = 65.0;
+		rim = 20.0;
 		color = Color.BLACK;
 		note = new Note((byte)60);
 	}
@@ -24,7 +24,7 @@ public class Circle {
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
-		rim = 5.0;
+		rim = 20.0;
 		color = Color.BLACK;
 		note = new Note((byte)60);
 	}
@@ -32,8 +32,8 @@ public class Circle {
 	public Circle(double x, double y, Note note) {
 		this.x = x;
 		this.y = y;
-		radius = 25.0;
-		rim = 5.0;
+		radius = 65.0;
+		rim = 20.0;
 		color = Color.BLACK;
 		this.note = note;
 	}
@@ -116,6 +116,6 @@ public class Circle {
 		g.setColor(color);
 		g.fillOval((int)(x - radius), (int)(y - radius), (int)(2 * radius), (int)(2 * radius));
 		g.setColor(Color.WHITE);
-		g.fillOval((int)(x - radius - rim), (int)(y - radius -rim), (int)(2 * (radius - rim)), (int)(2 * (radius - rim)));
+		g.fillOval((int)(x - radius + rim), (int)(y - radius + rim), (int)(2 * (radius-rim)), (int)(2 * (radius-rim)));
 	} 
 }

@@ -82,7 +82,7 @@ public class ETApplet extends JApplet {
     //addCard(optionsCard, "options");
     
     // assessment card
-    AssessmentCard assessmentCard = new AssessmentCard(selectedInstrument,selectedTonic);
+    AssessmentCard assessmentCard = new AssessmentCard();
 		addCard(assessmentCard, "assessment");
     
     // activity cards
@@ -90,7 +90,7 @@ public class ETApplet extends JApplet {
     // don't touch this stuff
     this.getContentPane().add(cardpanel);
     this.validate();
-    switchToCard("welcome");
+    switchToCard("assessment");
     
   }
 }
