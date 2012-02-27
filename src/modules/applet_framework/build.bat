@@ -1,3 +1,3 @@
 
 echo Building...
-javac -cp ..\..\lib\jfugue.jar;. *.java
+javac -cp ..\..\..\lib\jfugue.jar;. *.java
