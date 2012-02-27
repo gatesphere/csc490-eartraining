@@ -32,7 +32,7 @@ public class ETApplet extends JApplet {
   
   public void init() {
     System.out.println("Initializing...");
-    try {
+     try {
       javax.swing.SwingUtilities.invokeAndWait(new Runnable() {
         public void run() {
           createGUI();
@@ -43,7 +43,7 @@ public class ETApplet extends JApplet {
     }
     System.out.println("Initialized.");
   }
-  
+ 
   public void stop() {
     // stub
   }
@@ -83,6 +83,7 @@ public class ETApplet extends JApplet {
     
     // assessment card
     AssessmentCard assessmentCard = new AssessmentCard(selectedInstrument,selectedTonic);
+		addCard(assessmentCard, "assessment");
     
     // activity cards
     

@@ -16,7 +16,7 @@ public class AssessmentCard extends ActivityCard {
 							
 	public void initializeThisCard() {
     System.out.println("Initializing pane...");
-		ArrayList<Circle> circles = new ArrayList<>();
+		ArrayList<Circle> circles = new ArrayList<Circle>();
 		level = 0;
 		assemble();
   }
@@ -38,12 +38,14 @@ public class AssessmentCard extends ActivityCard {
 		double y = getSize().getHeight();
 		int t = tonic;
 		circles.add(new Circle(x,y,35.0,5.0,new Note(tonic)));
-		for (int i = 1; i <= 4 + 2 * level; i++) {
+		for (int i = 1; i <= 4 + (2 * level); i++) {
 			if (i % 2 == 0) {
-				t += i;
+				if (i < 5) t = tonic + i;
+				else t = tonic + i - 1;
 				x += i * 100;
 			} else {
-				t -= i;
+				if (i < 8)	t = tonic - i;
+				else t = tonic - i + 1;
 				x -= i * 100;
 			}
 			circles.add(new Circle(x,y,new Note((byte)t)));
