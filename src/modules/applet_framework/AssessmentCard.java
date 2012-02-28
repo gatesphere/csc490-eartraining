@@ -29,7 +29,9 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
   JPanel topper = new JPanel(new BorderLayout());
   JPanel top = new JPanel(new FlowLayout(FlowLayout.CENTER));
   JPanel bottom = new JPanel(new FlowLayout(FlowLayout.CENTER));
-              
+  JLabel play = new JLabel("<html><center><h2>Your guess?</h2></center></html>");
+  JPanel prompt = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
   public void initializeThisCard() {
     System.out.println("Initializing pane...");
     level = 0;
@@ -37,21 +39,23 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
     wrongAnswers = 0;
     addMouseListener(this);
     assemble();
-
-    top.add(label);
-    bottom.add(startButton);
-    bottom.add(endButton);
-    topper.add(top,BorderLayout.NORTH);
-    topper.add(bottom,BorderLayout.SOUTH);
-    add(topper,BorderLayout.NORTH);
-    startButton.setEnabled(true);
-    endButton.setEnabled(false);
-    startButton.addActionListener(this);
-    endButton.addActionListener(this);
   }
   
   public AssessmentCard() {
     setLayout(new BorderLayout());
+    top.add(label);
+    bottom.add(startButton);
+    bottom.add(endButton);
+    prompt.add(play);
+    topper.add(top,BorderLayout.NORTH);
+    topper.add(bottom,BorderLayout.CENTER);
+    topper.add(prompt,BorderLayout.SOUTH);
+    add(topper,BorderLayout.NORTH);
+    play.setVisible(false);
+    startButton.setEnabled(true);
+    endButton.setEnabled(false);
+    startButton.addActionListener(this);
+    endButton.addActionListener(this);
   }
   
   public AssessmentCard(String selectedTonic, byte selectedInstrument) {
@@ -63,7 +67,7 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
   public void actionPerformed(ActionEvent e) {
     String command = e.getActionCommand();
     if (command.equals("Start")) {
-      label.setText("<html><center><h1>Assessment<br></h1><h2>Level 2<br></center></h2></html>");
+      label.setText("<html><center><h1>Assessment<br></h1><h2>Level 1<br></center></h2></html>");
       startButton.setEnabled(false);
       test();
     } else if (command.equals("End")) {
@@ -75,9 +79,12 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
   protected void test() {
     new Thread(new Runnable() {
       public void run() {
-        playTonic();
+	// play the tonic        
+	playTonic();
         System.out.println("Tonic played");
-        while (level < 5 && wrongAnswers < 8) {
+        
+	// play the game
+	while (level < 5 && wrongAnswers < 8) {
           try {
             Thread.sleep(2000);
           } catch (InterruptedException ie) {}
@@ -86,17 +93,19 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
           System.out.println("Right = " + i);
           playCircle(circles.get(i));
           System.out.println("Right played");
+          play.setVisible(true);
           while(click == null) {
             try {
               Thread.sleep(500);
             } catch (InterruptedException ie) {}
           }
+          play.setVisible(false);
           if (isWithin(click)) {
             playCorrect(right);
             rightAnswers++;
-            if (rightAnswers > 10) {
+            if (rightAnswers >= 10) {
               level++;
-              label.setText("<html><center><h1>Assessment<br></h1><h2>Level " + (level+1) + "<br></h2></center></html>");
+              label.setText("<html><center><h1>Assessment<br></h1><h2>Level " + (level + 1) + "<br></h2></center></html>");
               assemble();
               rightAnswers = 0;
               wrongAnswers = 0;
@@ -153,7 +162,7 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
     int t;
     circles = new ArrayList<Circle>();
     circles.add(new Circle(x,y,tonic));
-    for (int i = 1; i <= 4 + (2 * level); i++) {
+    for (int i = 1; i <= (2 * (level+1)); i++) {
       if (i % 2 == 0) {
         if (i < 5) t = i;
         else t = i - 1;
