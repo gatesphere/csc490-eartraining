@@ -11,15 +11,26 @@ public class OptionsCard extends ActivityCard implements ItemListener, ActionLis
 	boolean[] instrumentOptions = new boolean[6];
 
 	public OptionsCard() {
+		JPanel organizer = new JPanel(new BorderLayout());
+		
 		/* making and positioning the label */
 		JLabel title = new JLabel("<html><h1>Options</h1></html>");
+		JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		title.setHorizontalTextPosition(JLabel.CENTER);
-				
+		titlePanel.add(title);
+		
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		
 		JButton okay = new JButton("Okay");
 		JButton cancel = new JButton("Cancel");
+		buttonPanel.add(okay);
+		buttonPanel.add(cancel);
+		
+		JPanel checkboxesPanel = new JPanel(new BorderLayout());
 		
 		/* panel of tonic checkboxes */
-		JPanel tonicsPanel = new JPanel();
+		JPanel tonicsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		
 		tonicsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Tonics"));
 		tonicBoxes.add(new JCheckBox("C"));
 		tonicBoxes.add(new JCheckBox("C#/Db"));
@@ -43,7 +54,8 @@ public class OptionsCard extends ActivityCard implements ItemListener, ActionLis
 		}
 		
 		/* panel of instrument checkboxes */
-		JPanel instrumentsPanel = new JPanel();
+		JPanel instrumentsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		
 		instrumentsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Instruments"));
 		instrumentBoxes.add(new JCheckBox("Piano"));
 		instrumentBoxes.add(new JCheckBox("Guitar"));
@@ -63,11 +75,14 @@ public class OptionsCard extends ActivityCard implements ItemListener, ActionLis
 		okay.setActionCommand("okay");
 		cancel.addActionListener(this);
 		
-		add(title);
-		add(instrumentsPanel);
-		add(tonicsPanel);
-		add(okay);
-		add(cancel);
+		checkboxesPanel.add(instrumentsPanel, BorderLayout.NORTH);
+		checkboxesPanel.add(tonicsPanel, BorderLayout.SOUTH);
+		
+		organizer.add(titlePanel, BorderLayout.NORTH);
+		organizer.add(checkboxesPanel, BorderLayout.CENTER);
+		organizer.add(buttonPanel, BorderLayout.SOUTH);
+		
+		add(organizer);
 		
 		
 	}
@@ -184,6 +199,6 @@ public class OptionsCard extends ActivityCard implements ItemListener, ActionLis
 				if ( !instrumentOptions[i] && ETApplet.instruments.contains(ETApplet.instrumentsArray[i]) ) ETApplet.instruments.remove(ETApplet.instrumentsArray[i]);
 			}
 		}
-		ETApplet.switchToCard("test");
+		ETApplet.switchToCard("assessment");
 	}
 }
