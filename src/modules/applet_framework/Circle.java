@@ -15,8 +15,8 @@ public class Circle extends JPanel {
 	public Circle(int x, int y) {
 		this.x = x;
 		this.y = y;
-		radius = 50;
-		rim = 20;
+		radius = 35;
+		rim = 15;
 		color = Color.BLACK;
 		note = "C4";
 	}
@@ -25,7 +25,7 @@ public class Circle extends JPanel {
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
-		rim = 20;
+		rim = 15;
 		color = Color.BLACK;
 		note = "C4";
 	}
@@ -33,8 +33,8 @@ public class Circle extends JPanel {
 	public Circle(int x, int y, String note) {
 		this.x = x;
 		this.y = y;
-		radius = 50;
-		rim = 20;
+		radius = 35;
+		rim = 15;
 		color = Color.BLACK;
 		this.note = note;
 	}

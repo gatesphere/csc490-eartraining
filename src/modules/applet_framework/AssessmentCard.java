@@ -10,7 +10,7 @@ import org.jfugue.*;
 public class AssessmentCard extends ActivityCard implements MouseListener, ActionListener {
   
 	//variables
-	ArrayList<Circle> circles = new ArrayList<Circle>();
+	ArrayList<Circle> circles;
 	int level;
 	int rightAnswers;
 	int wrongAnswers;
@@ -25,6 +25,10 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
 	IntervalNotation sequence;
 	JButton startButton = new JButton("Start");
 	JButton endButton = new JButton("End");
+	JLabel label = new JLabel("<html><center><h1>Assessment<br></h1><h2>Press start</h2></center></html>");
+	JPanel topper = new JPanel(new BorderLayout());
+	JPanel top = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	JPanel bottom = new JPanel(new FlowLayout(FlowLayout.CENTER));
 							
 	public void initializeThisCard() {
     System.out.println("Initializing pane...");
@@ -33,29 +37,36 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
 		wrongAnswers = 0;
 		addMouseListener(this);
 		assemble();
-		add(startButton);
-		add(endButton);
-		startButton.setVisible(true);
-		endButton.setVisible(false);
+
+		top.add(label);
+		bottom.add(startButton);
+		bottom.add(endButton);
+		topper.add(top,BorderLayout.NORTH);
+		topper.add(bottom,BorderLayout.SOUTH);
+		add(topper,BorderLayout.NORTH);
+		startButton.setEnabled(true);
+		endButton.setEnabled(false);
 		startButton.addActionListener(this);
   }
   
   public AssessmentCard() {
-		setLayout(new FlowLayout(FlowLayout.CENTER));
+		setLayout(new BorderLayout());
 	}
 	
-	public AssessmentCard(String selectedTonic, int selectedInstrument) {
-		instrument = selectedInstrument;
+	public AssessmentCard(String selectedTonic, byte selectedInstrument) {
+		instrument = (int)selectedInstrument;
 		selectedTonic = selectedTonic;
-		setLayout(new FlowLayout(FlowLayout.CENTER));
+		setLayout(new BorderLayout());
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if (command.equals("Start")) {
-			startButton.setVisible(false);
+			label.setText("<html><center><h1>Assessment<br></h1><h2>Level 2<br></center></h2></html>");
+			startButton.setEnabled(false);
 			test();
-		} else ETApplet.switchToCard("welcome");
+		} else if (command.equals("End"))
+				ETApplet.switchToCard("welcome");
 	}
   
 	protected void test() {
@@ -63,7 +74,7 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
 			public void run() {
 				playTonic();
 				System.out.println("Tonic played");
-				while (level < 8 && wrongAnswers < 8) {
+				while (level < 5 && wrongAnswers < 8) {
 					try {
 						Thread.sleep(2000);
 					} catch (InterruptedException ie) {}
@@ -82,9 +93,13 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
 						rightAnswers++;
 						if (rightAnswers > 10) {
 							level++;
+							label.setText("<html><center><h1>Assessment<br></h1><h2>Level " + (level+1) + "<br></h2></center></html>");
+							assemble();
 							rightAnswers = 0;
 							wrongAnswers = 0;
-							assemble();
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException ie) {}
 						}
 					} else {
 						playIncorrect(right);
@@ -92,11 +107,10 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
 					}
 					click = null;
 				}
-				endButton.setVisible(true);
+				endButton.setEnabled(true);
 				gameOver = true;
 			}
 		}).start();
-
 	}
 
 	protected boolean isWithin(int[] click) {
@@ -112,14 +126,13 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
 		click[0] = event.getX();
 		click[1] = event.getY();
 		System.out.println("X = " + click[0] + " Y = " + click[1]);
-	}   
+	} 
 
 	//unused...
 	public void mouseEntered (MouseEvent me) {} 
 	public void mousePressed (MouseEvent me) {} 
 	public void mouseReleased (MouseEvent me) {}  
 	public void mouseExited (MouseEvent me) {}  
-
 
 	protected int random() {
 		return random.nextInt(circles.size());
@@ -135,16 +148,17 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
 		int x = (int)(getSize().getWidth()/2.0);
 		int y = (int)(getSize().getHeight()/2.0);
 		int t;
-		circles.add(new Circle(x,y,50,20,tonic));
+		circles = new ArrayList<Circle>();
+		circles.add(new Circle(x,y,tonic));
 		for (int i = 1; i <= 4 + (2 * level); i++) {
 			if (i % 2 == 0) {
 				if (i < 5) t = i;
 				else t = i - 1;
-				x += i * 100;
+				x += i * 70;
 			} else {
 				if (i < 8)	t = -i;
 				else t = -i + 1;
-				x -= i * 100;
+				x -= i * 70;
 			}
 			String note = "<" + t + ">q"; 
 			circles.add(new Circle(x,y,note));
@@ -155,13 +169,14 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
 	public void playCircle(Circle circle) {
 		sequence = new IntervalNotation(circle.getNote());
 		pattern = sequence.getPatternForRootNote(tonic);
+		repaint();
 		ETApplet.player.play(pattern);
 	}
 
 	public void playTonic() {
 		circles.get(0).setColor(Color.YELLOW);
-		repaint();
 		System.out.println("Color = yellow");
+		repaint();
 		ETApplet.player.play(tonic);
 		System.out.println("Pattern played");
 		circles.get(0).setColor(Color.BLACK);
@@ -170,9 +185,9 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
 
 	public void playCorrect(Circle circle) {
 		circle.setColor(Color.GREEN);
-		repaint();
 		sequence = new IntervalNotation(circle.getNote());
 		pattern = sequence.getPatternForRootNote(tonic);
+		repaint();
 		ETApplet.player.play(pattern);
 		circle.setColor(Color.BLACK);
 		repaint();
@@ -180,7 +195,6 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
 	
 	public void playIncorrect(Circle circle) {
 		circle.setColor(Color.RED);
-		repaint();
 		playTonic();
 		sequence = new IntervalNotation(circle.getNote());
 		pattern = sequence.getPatternForRootNote(tonic);
