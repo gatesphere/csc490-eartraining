@@ -12,11 +12,11 @@ import java.util.*;
 import org.jfugue.*;
 
 public class ETApplet extends JApplet {
-	static final Player player = new Player();;
-  private static JPanel cardpanel = new JPanel(new CardLayout());
-  private static Map<String, ActivityCard> cards = new HashMap<String, ActivityCard>();
+	static final Player player = new Player();
+	private static JPanel cardpanel = new JPanel(new CardLayout());
+	private static Map<String, ActivityCard> cards = new HashMap<String, ActivityCard>();
   
-  static final String[] tonicsArray = {"C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4"};
+	static final String[] tonicsArray = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
 	static final Byte[] instrumentsArray = {0, 24, 40, 53, 73, 80};
   /* respectively: piano, guitar, violin, voice oohs, flute, square lead */
   
@@ -74,9 +74,8 @@ public class ETApplet extends JApplet {
     // menu card
     
     // options card
-		// for the sake of testing, if lines make it so code won't compile, just comment them out, please and thankyou
-    //OptionsCard optionsCard = new OptionsCard();
-    //addCard(optionsCard, "options");
+    OptionsCard optionsCard = new OptionsCard();
+    addCard(optionsCard, "options");
     
     // assessment card
     AssessmentCard assessmentCard = new AssessmentCard(); //to do: add params: selectedTonic, selectedInstrument
@@ -87,7 +86,7 @@ public class ETApplet extends JApplet {
     // don't touch this stuff
     this.getContentPane().add(cardpanel);
     this.validate();
-    switchToCard("assessment");
+    switchToCard("options");
     
   }
 }
