@@ -7,23 +7,25 @@ import java.util.*;
 import javax.swing.*;
 import org.jfugue.*;
 
-public class AssessmentCard extends ActivityCard implements MouseListener, ActionListener {
+public class ActivityOneCard extends ActivityCard implements MouseListener, ActionListener {
   
   //variables
   ArrayList<Circle> circles;
+  int level;
   int rightAnswers;
   int wrongAnswers;
   Circle right;
   int[] click = null;
   Random random = new Random();
+  //instrument and tonic won't be hard coded in future
   int instrument;
-  boolean gameOver = false;
-  String tonic = "C4";
+  boolean gameOver;
+  String tonic;
   Pattern pattern;
   IntervalNotation sequence;
   JButton startButton = new JButton("Start");
   JButton endButton = new JButton("End");
-  JLabel label = new JLabel("<html><center><h1>Assessment<br></h1><h2>Press start</h2></center></html>");
+  JLabel label = new JLabel("<html><center><h1>Activity One<br></h1><h2>Press start</h2></center></html>");
   JPanel topper = new JPanel(new BorderLayout());
   JPanel top = new JPanel(new FlowLayout(FlowLayout.CENTER));
   JPanel bottom = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -32,6 +34,7 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
 
   public void initializeThisCard() {
     System.out.println("Initializing pane...");
+    level = 0;
     rightAnswers = 0;
     wrongAnswers = 0;
     instrument = ETApplet.selectedInstrument;
@@ -40,9 +43,9 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
     assemble();
   }
   
-  public AssessmentCard() {
+  public ActivityOneCard() {
     setLayout(new BorderLayout());
-	  top.add(label);
+		top.add(label);
     bottom.add(startButton);
     bottom.add(endButton);
     prompt.add(play);
@@ -75,8 +78,8 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
 	// play the tonic        
 	playTonic();
         
-	// run the assessment
-	while (wrongAnswers <= 10 && rightAnswers <= 50) {
+	// play the game
+	while (level < 5 && wrongAnswers < 8) {
           try {
             Thread.sleep(2000);
           } catch (InterruptedException ie) {}
@@ -93,6 +96,16 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
           if (isWithin(click)) {
             playCorrect(right);
             rightAnswers++;
+            if (rightAnswers >= 10) {
+              level++;
+              label.setText("<html><center><h1>Activity One<br></h1><h2>Level " + (level + 1) + "<br></h2></center></html>");
+              assemble();
+              rightAnswers = 0;
+              wrongAnswers = 0;
+              try {
+                Thread.sleep(1000);
+              } catch (InterruptedException ie) {}
+            }
           } else {
             playIncorrect(right);
             wrongAnswers++;
@@ -101,10 +114,14 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
         }
         endButton.setEnabled(true);
         gameOver = true;
-				ETApplet.recordAssessmentResults(rightAnswers, wrongAnswers);
+				recordResults();
       }
     }).start();
   }
+
+	protected void recordResults() {
+		ETApplet.recordActivityResults(this,level);
+	}
 
   protected boolean isWithin(int[] click) {
     int[] position = right.getPosition();
@@ -141,7 +158,7 @@ public class AssessmentCard extends ActivityCard implements MouseListener, Actio
     int t;
     circles = new ArrayList<Circle>();
     circles.add(new Circle(x,y,tonic));
-    for (int i = 1; i <= 14; i++) {
+    for (int i = 1; i <= (2 * (level+1)); i++) {
       if (i % 2 == 0) {
         if (i < 5) t = i;
         else t = i - 1;

@@ -9,6 +9,8 @@ public class ActivityCard extends JPanel {
     // card initialization code here
     System.out.println("Initializing pane...");
   }
+
+	public void initializeThisCard(String selectedTonic, int selectedInstrument) {}
   
   public ActivityCard() {
     super();

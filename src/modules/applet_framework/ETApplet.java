@@ -25,8 +25,10 @@ public class ETApplet extends JApplet {
   static java.util.List<String> tonics = new ArrayList<String>(Arrays.asList(tonicsArray));
   static java.util.List<Byte> instruments = new ArrayList<Byte>(Arrays.asList(instrumentsArray));
 
-	static String selectedTonic; 
-	static int selectedInstrument;
+	//selectedTonic and selectedInstrument won't be hardcoded in future
+	static String selectedTonic = "C4"; 
+	static int selectedInstrument = 0;
+	static String selectedActivity;
 	static String user;
   
   public void init() {
@@ -61,8 +63,15 @@ public class ETApplet extends JApplet {
   public static void initializeCard(String cardname) {
     cards.get(cardname).initializeThisCard();
   }
+	
+  public static void recordActivityResults(ActivityCard card, int level) {
+		//magic and wonder
+	}
   
-  
+	public static void recordAssessmentResults(int rightAnswers, int wrongAnswers) {
+		//more magic and wonder
+	}
+
   public void createGUI() {
     // add cards here
     WelcomeCard welcomeCard = new WelcomeCard();
@@ -70,16 +79,20 @@ public class ETApplet extends JApplet {
     addCard(welcomeCard, "welcome");
     
     // menu card
+		MenuCard menuCard = new MenuCard();
+		addCard(menuCard, "menu");
     
     // options card
     OptionsCard optionsCard = new OptionsCard();
     addCard(optionsCard, "options");
     
     // assessment card
-    AssessmentCard assessmentCard = new AssessmentCard(); //to do: add params: selectedTonic, selectedInstrument
-		addCard(assessmentCard, "assessment");
+    AssessmentCard assessmentCard = new AssessmentCard();
+		addCard(assessmentCard, "Assessment");
     
     // activity cards
+		ActivityOneCard activityOneCard = new ActivityOneCard();
+		addCard(activityOneCard, "Activity One");
     
     // don't touch this stuff
     this.getContentPane().add(cardpanel);

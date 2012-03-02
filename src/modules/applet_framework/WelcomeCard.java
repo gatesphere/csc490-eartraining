@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-public class WelcomeCard extends ActivityCard implements ActionListener, FocusListener {
+public class WelcomeCard extends ActivityCard implements ActionListener, FocusListener, DocumentListener {
 
 	JLabel header = new JLabel("<html><center><h1>Welcome to the Ear Training Suite<br></h1><h3>Sign in to get started<br></h3></center></html>");
 	JTextField userField = new JTextField("username",15);
@@ -20,6 +20,8 @@ public class WelcomeCard extends ActivityCard implements ActionListener, FocusLi
 	char[] password;
 	boolean userPrev;
 	boolean passwordPrev;
+	boolean userFilled;
+	boolean passwordFilled;
 
 	//layout not set in stone... i'll play with it if i have time
   public void initializeThisCard() {
@@ -47,53 +49,43 @@ public class WelcomeCard extends ActivityCard implements ActionListener, FocusLi
 		enterButton.requestFocus();
 		userField.addFocusListener(this);
 		passwordField.addFocusListener(this);
-		JButtonStateController enterButtonStateController = new JButtonStateController(userField.getDocument(),passwordField.getDocument());
-		userField.getDocument().addDocumentListener(enterButtonStateController);
-		passwordField.getDocument().addDocumentListener(enterButtonStateController);
+		userField.getDocument().addDocumentListener(this);
+		passwordField.getDocument().addDocumentListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == enterButton) {
 				ETApplet.user = userField.getText();
 				password = passwordField.getPassword();
-				ETApplet.switchToCard("options");
+				ETApplet.switchToCard("menu");
 		}
   }
 
 	//clears preset text from username and password fields when cursor enters said field
 	public void focusGained(FocusEvent e) {
-		if (userField.isFocusOwner() && !userPrev) {
-			userField.setText("");
-			userPrev = true;
-		} else if (passwordField.isFocusOwner() && !passwordPrev) {
-			passwordField.setText("");
-			passwordPrev = true;
-		}
+		if (userField.isFocusOwner())
+			if (!userPrev) {
+				userField.setText("");
+				userPrev = true;
+			} else userField.selectAll();
+		else if (passwordField.isFocusOwner())
+			if (!passwordPrev) {
+				passwordField.setText("");
+				passwordPrev = true;
+			} else passwordField.selectAll();
 	}
 	//not used
 	public void focusLost(FocusEvent e) {}
 
 	//controls state of enter button, enabling only when both username and password are filled out
-	class JButtonStateController implements DocumentListener {
-		boolean userFilled;
-		boolean passwordFilled;
-		Document userDoc;
-		Document passwordDoc;
-					   
-		JButtonStateController(Document userDoc, Document passwordDoc) {
-			this.userDoc = userDoc;
-			this.passwordDoc = passwordDoc;
-		}
-	
-		public void disableIfEmpty(DocumentEvent e) {
-			if (e.getDocument() == userDoc) userFilled = e.getDocument().getLength() > 0;
-			if (e.getDocument() == passwordDoc) passwordFilled = e.getDocument().getLength() > 0;
-			enterButton.setEnabled(userFilled && passwordFilled);
-		}
-
-		public void changedUpdate(DocumentEvent e) { disableIfEmpty(e); }
-		public void insertUpdate(DocumentEvent e) { disableIfEmpty(e); }
-		public void removeUpdate(DocumentEvent e) { disableIfEmpty(e); }
-
+	public void disableIfEmpty(DocumentEvent e) {
+		if (e.getDocument() == userField.getDocument()) userFilled = e.getDocument().getLength() > 0;
+		if (e.getDocument() == passwordField.getDocument()) passwordFilled = e.getDocument().getLength() > 0;
+		enterButton.setEnabled(userFilled && passwordFilled);
 	}
+
+	public void changedUpdate(DocumentEvent e) { disableIfEmpty(e); }
+	public void insertUpdate(DocumentEvent e) { disableIfEmpty(e); }
+	public void removeUpdate(DocumentEvent e) { disableIfEmpty(e); }
+
 }

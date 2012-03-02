@@ -195,6 +195,6 @@ public class OptionsCard extends ActivityCard implements ItemListener, ActionLis
 				}
 			}
 		}
-		ETApplet.switchToCard("assessment");
+		ETApplet.switchToCard("menu");
 	}
 }
