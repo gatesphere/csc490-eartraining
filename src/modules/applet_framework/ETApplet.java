@@ -27,6 +27,7 @@ public class ETApplet extends JApplet {
 
 	static String selectedTonic; 
 	static int selectedInstrument;
+	static String user;
   
   public void init() {
     System.out.println("Initializing...");
