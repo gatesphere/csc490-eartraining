@@ -185,18 +185,14 @@ public class OptionsCard extends ActivityCard implements ItemListener, ActionLis
 	public void actionPerformed(ActionEvent e) {
 		Object source = (Object)e.getActionCommand();
 		if ( source.equals("okay") ) {
-			/* these for-loops check if the options in ETApplet are inconsistent with the options in OptionsCard, and if so, changes them */
+			/* this for-loops check if the options in ETApplet are inconsistent with the options in OptionsCard, and if so, changes them */
 			for ( int i = 0; i < 12; ++i ) {
 				if ( tonicOptions[i] && !ETApplet.tonics.contains(ETApplet.tonicsArray[i]) ) ETApplet.tonics.add(ETApplet.tonicsArray[i]);
-			}
-			for ( int i = 0; i < 6; ++i ) {
-				if ( instrumentOptions[i] && !ETApplet.instruments.contains(ETApplet.instrumentsArray[i]) ) ETApplet.instruments.add(ETApplet.instrumentsArray[i]);
-			}
-			for ( int i = 0; i < 12; ++i ) {
 				if ( !tonicOptions[i] && ETApplet.tonics.contains(ETApplet.tonicsArray[i]) ) ETApplet.tonics.remove(ETApplet.tonicsArray[i]);
-			}
-			for ( int i = 0; i < 6; ++i ) {
-				if ( !instrumentOptions[i] && ETApplet.instruments.contains(ETApplet.instrumentsArray[i]) ) ETApplet.instruments.remove(ETApplet.instrumentsArray[i]);
+				if ( i < 6 ) {
+					if ( instrumentOptions[i] && !ETApplet.instruments.contains(ETApplet.instrumentsArray[i]) ) ETApplet.instruments.add(ETApplet.instrumentsArray[i]);
+					if ( !instrumentOptions[i] && ETApplet.instruments.contains(ETApplet.instrumentsArray[i]) ) ETApplet.instruments.remove(ETApplet.instrumentsArray[i]);
+				}
 			}
 		}
 		ETApplet.switchToCard("assessment");

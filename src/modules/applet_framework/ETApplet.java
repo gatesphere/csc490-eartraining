@@ -26,7 +26,7 @@ public class ETApplet extends JApplet {
   static java.util.List<Byte> instruments = new ArrayList<Byte>(Arrays.asList(instrumentsArray));
 
 	static String selectedTonic; 
-	static Byte selectedInstrument;
+	static int selectedInstrument;
   
   public void init() {
     System.out.println("Initializing...");
@@ -45,8 +45,6 @@ public class ETApplet extends JApplet {
   public void stop() {
     // stub
   }
-	
-
   
   public static void switchToCard(String cardname) {
     CardLayout cl = (CardLayout)(cardpanel.getLayout());
@@ -66,8 +64,7 @@ public class ETApplet extends JApplet {
   
   public void createGUI() {
     // add cards here
-    ActivityCard welcomeCard = new ActivityCard(new FlowLayout(FlowLayout.CENTER));
-    welcomeCard.add(new JLabel("<html><h1>Welcome to ETApplet</h1></html>"));
+    WelcomeCard welcomeCard = new WelcomeCard();
     
     addCard(welcomeCard, "welcome");
     
@@ -86,7 +83,6 @@ public class ETApplet extends JApplet {
     // don't touch this stuff
     this.getContentPane().add(cardpanel);
     this.validate();
-    switchToCard("options");
-    
+    switchToCard("welcome");
   }
 }
