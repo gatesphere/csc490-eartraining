@@ -12,12 +12,12 @@ import java.util.*;
 import org.jfugue.*;
 
 public class ETApplet extends JApplet {
-	static final Player player = new Player();
-	private static JPanel cardpanel = new JPanel(new CardLayout());
-	private static Map<String, ActivityCard> cards = new HashMap<String, ActivityCard>();
+  static final Player player = new Player();
+  private static JPanel cardpanel = new JPanel(new CardLayout());
+  private static Map<String, ActivityCard> cards = new HashMap<String, ActivityCard>();
   
-	static final String[] tonicsArray = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
-	static final Byte[] instrumentsArray = {0, 24, 40, 53, 73, 80};
+  static final String[] tonicsArray = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+  static final Byte[] instrumentsArray = {0, 24, 40, 53, 73, 80};
   /* respectively: piano, guitar, violin, voice oohs, flute, square lead */
   
   /* Options for instruments and tonics.  All are enabled by default.  If this list contains
@@ -25,11 +25,11 @@ public class ETApplet extends JApplet {
   static java.util.List<String> tonics = new ArrayList<String>(Arrays.asList(tonicsArray));
   static java.util.List<Byte> instruments = new ArrayList<Byte>(Arrays.asList(instrumentsArray));
 
-	//selectedTonic and selectedInstrument won't be hardcoded in future
-	static String selectedTonic = "C4"; 
-	static int selectedInstrument = 0;
-	static String selectedActivity;
-	static String user;
+  //selectedTonic and selectedInstrument won't be hardcoded in future
+  static String selectedTonic = "C4"; 
+  static int selectedInstrument = 0;
+  static String selectedActivity;
+  static String user;
   
   public void init() {
     System.out.println("Initializing...");
@@ -63,24 +63,25 @@ public class ETApplet extends JApplet {
   public static void initializeCard(String cardname) {
     cards.get(cardname).initializeThisCard();
   }
-	
-  public static void recordActivityResults(ActivityCard card, int level) {
-		//magic and wonder
-	}
   
-	public static void recordAssessmentResults(int rightAnswers, int wrongAnswers) {
-		//more magic and wonder
-	}
+  public static void recordActivityResults(ActivityCard card, int level) {
+    //magic and wonder
+  }
+  
+  public static void recordAssessmentResults(int rightAnswers, int wrongAnswers) {
+    //more magic and wonder
+  }
 
   public void createGUI() {
     // add cards here
-    WelcomeCard welcomeCard = new WelcomeCard();
     
+    // welcome card
+    WelcomeCard welcomeCard = new WelcomeCard();
     addCard(welcomeCard, "welcome");
     
     // menu card
-		MenuCard menuCard = new MenuCard();
-		addCard(menuCard, "menu");
+    MenuCard menuCard = new MenuCard();
+    addCard(menuCard, "menu");
     
     // options card
     OptionsCard optionsCard = new OptionsCard();
@@ -88,11 +89,11 @@ public class ETApplet extends JApplet {
     
     // assessment card
     AssessmentCard assessmentCard = new AssessmentCard();
-		addCard(assessmentCard, "Assessment");
+    addCard(assessmentCard, "Assessment");
     
     // activity cards
-		ActivityOneCard activityOneCard = new ActivityOneCard();
-		addCard(activityOneCard, "Activity One");
+    ActivityOneCard activityOneCard = new ActivityOneCard();
+    addCard(activityOneCard, "Activity One");
     
     // don't touch this stuff
     this.getContentPane().add(cardpanel);
