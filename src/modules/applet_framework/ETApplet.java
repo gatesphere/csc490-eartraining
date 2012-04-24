@@ -27,7 +27,7 @@ public class ETApplet extends JApplet {
 
   //selectedTonic and selectedInstrument won't be hardcoded in future
   static String selectedTonic = "C4"; 
-  static int selectedInstrument = 0;
+  static int selectedInstrument = 24;
   static String selectedActivity;
   static String user;
   
@@ -94,6 +94,10 @@ public class ETApplet extends JApplet {
     // activity cards
     ActivityOneCard activityOneCard = new ActivityOneCard();
     addCard(activityOneCard, "Activity One");
+	
+	//	activity two
+	ActivityTwoCard activityTwoCard = new ActivityTwoCard();
+	addCard(activityTwoCard, "Activity Two");
     
     // don't touch this stuff
     this.getContentPane().add(cardpanel);

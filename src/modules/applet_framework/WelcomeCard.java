@@ -37,12 +37,12 @@ public class WelcomeCard extends ActivityCard implements ActionListener, FocusLi
     enterButton.setEnabled(false);
     addActionListeners();
   }
-  
+  //constructor
   public WelcomeCard() {
     super();
     setLayout(new BorderLayout());
   }
-  
+  //what do focusListener and document listener do?
   public void addActionListeners() {
     enterButton.addActionListener(this);
     enterButton.addFocusListener(this);
@@ -55,8 +55,11 @@ public class WelcomeCard extends ActivityCard implements ActionListener, FocusLi
 
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == enterButton) {
+		//is getText a method of userField somewhere?
         ETApplet.user = userField.getText();
+		//same thing with getPassword
         password = passwordField.getPassword();
+		//this gets the next card once enterbutton is pressed with inputs in the fields
         ETApplet.switchToCard("menu");
     }
   }
@@ -64,6 +67,7 @@ public class WelcomeCard extends ActivityCard implements ActionListener, FocusLi
   //clears preset text from username and password fields when cursor enters said field
   public void focusGained(FocusEvent e) {
     if (userField.isFocusOwner())
+		//userPrev is a boolean variable
       if (!userPrev) {
         userField.setText("");
         userPrev = true;
@@ -72,9 +76,11 @@ public class WelcomeCard extends ActivityCard implements ActionListener, FocusLi
       if (!passwordPrev) {
         passwordField.setText("");
         passwordPrev = true;
+		//what does .selectAll() do?
       } else passwordField.selectAll();
   }
   //not used
+  //what would this do?
   public void focusLost(FocusEvent e) {}
 
   //controls state of enter button, enabling only when both username and password are filled out
@@ -83,7 +89,8 @@ public class WelcomeCard extends ActivityCard implements ActionListener, FocusLi
     if (e.getDocument() == passwordField.getDocument()) passwordFilled = e.getDocument().getLength() > 0;
     enterButton.setEnabled(userFilled && passwordFilled);
   }
-
+	
+	//what do these do?
   public void changedUpdate(DocumentEvent e) { disableIfEmpty(e); }
   public void insertUpdate(DocumentEvent e) { disableIfEmpty(e); }
   public void removeUpdate(DocumentEvent e) { disableIfEmpty(e); }

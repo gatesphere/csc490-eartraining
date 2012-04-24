@@ -21,12 +21,16 @@ public class MenuCard extends ActivityCard implements ActionListener {
 	//we can add more as we complete more...
 	JRadioButton assessmentButton = new JRadioButton("Assessment");
 	JRadioButton activityOneButton = new JRadioButton("Activity One");
+	//New Here
+	JRadioButton activityTwoButton = new JRadioButton("Activity Two");
 
   public void initializeThisCard() {
 		nextButton.addActionListener(this);
 		optionsButton.addActionListener(this);
 		assessmentButton.addActionListener(this);
 		activityOneButton.addActionListener(this);
+		//new Here
+		activityTwoButton.addActionListener(this);
 	}
   
   public MenuCard() {
@@ -35,6 +39,8 @@ public class MenuCard extends ActivityCard implements ActionListener {
 		add(top,BorderLayout.NORTH);
 		centerLeft.add(assessmentButton);
 		centerLeft.add(activityOneButton);
+		//new here
+		centerLeft.add(activityTwoButton);
 		center.add(centerLeft);
 		centerRight.add(description);
 		center.add(centerRight);
