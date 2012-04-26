@@ -20,13 +20,13 @@ public class ETApplet extends JApplet {
   static final Byte[] instrumentsArray = {0, 24, 40, 53, 73, 80};
   /* respectively: piano, guitar, violin, voice oohs, flute, square lead */
   
-  /* Options for instruments and tonics.  All are enabled by default.  If this list contains
-  the option, the option is enabled.  This list is accessed by the Options card. */
+  /* Options for instruments and tonics. All are enabled by default. If this list contains
+the option, the option is enabled. This list is accessed by the Options card. */
   static java.util.List<String> tonics = new ArrayList<String>(Arrays.asList(tonicsArray));
   static java.util.List<Byte> instruments = new ArrayList<Byte>(Arrays.asList(instrumentsArray));
 
   //selectedTonic and selectedInstrument won't be hardcoded in future
-  static String selectedTonic = "C4"; 
+  static String selectedTonic = "C4";
   static int selectedInstrument = 24;
   static String selectedActivity;
   static String user;
@@ -94,10 +94,14 @@ public class ETApplet extends JApplet {
     // activity cards
     ActivityOneCard activityOneCard = new ActivityOneCard();
     addCard(activityOneCard, "Activity One");
-	
-	//	activity two
-	ActivityTwoCard activityTwoCard = new ActivityTwoCard();
-	addCard(activityTwoCard, "Activity Two");
+
+// activity two
+ActivityTwoCard activityTwoCard = new ActivityTwoCard();
+addCard(activityTwoCard, "Activity Two");
+
+// activity three
+ActivityThreeCard activityThreeCard = new ActivityThreeCard();
+addCard(activityThreeCard, "Activity Three");
     
     // don't touch this stuff
     this.getContentPane().add(cardpanel);

@@ -5,10 +5,10 @@ import javax.swing.*;
 import org.jfugue.*;
 
 public class ActivityTwoCard extends ActivityCard implements MouseListener, ActionListener{
-	
 	//variables
 	ArrayList<Circle> circles;
 	int trial;
+	int numTrials = 6;
 	int rightAnswers;
 	int wrongAnswers;
 	Circle right;
@@ -69,7 +69,7 @@ public class ActivityTwoCard extends ActivityCard implements MouseListener, Acti
 	public void actionPerformed(ActionEvent e){
 		String command = e.getActionCommand();
 		if(command.equals("Start")){
-			header.setText("<html><center<h1>Activity Two<br></h1><h2>Trial 1<br></center></h2></html>");
+			header.setText("<html><center<h1>Activity Two<br></h1><h2>Trial " + (trial) + " of " + (numTrials) + "<br></center></h2></html>");
 			startButton.setEnabled(false);
 			test();
 			endButton.setEnabled(false);
@@ -77,6 +77,7 @@ public class ActivityTwoCard extends ActivityCard implements MouseListener, Acti
 			System.out.println("Ending...");
 			startButton.setEnabled(true);
 			endButton.setEnabled(false);
+			header.setText("<html><center<h1>Activity Two</h1></center></html>");
 			ETApplet.switchToCard("menu");
 		}
 	}
@@ -84,7 +85,7 @@ public class ActivityTwoCard extends ActivityCard implements MouseListener, Acti
 		new Thread(new Runnable() {
 			public void run(){
 			playTonic();
-		while(trial < 6){
+		while(trial <= numTrials){
 			try{
 				Thread.sleep(2000);
 			}catch (InterruptedException ie){}
@@ -100,11 +101,11 @@ public class ActivityTwoCard extends ActivityCard implements MouseListener, Acti
 					Thread.sleep(500);
 				}catch (InterruptedException ie) {}
 			}
+			//so you can't see what was just played
 			play.setVisible(false);
 			if (isWithin(click)){
 				playCorrect(right);
 				rightAnswers++;
-				
 				//play tonic then up or down to the correct bubble
 				try{
 					Thread.sleep(500);
@@ -157,8 +158,10 @@ public class ActivityTwoCard extends ActivityCard implements MouseListener, Acti
 				}
 			}
 				trial++;
-				header.setText("<html><center><h1>Activity Two<br></h1><h2>Trial " +
-				(trial) + "<br></h2></center></html>");
+				if(trial <= numTrials){
+					header.setText("<html><center><h1>Activity Two<br></h1><h2>Trial " +
+					(trial) + " of " + (numTrials) +"<br></h2></center></html>");
+				}
 				click = null;
 			}
 			endButton.setEnabled(true);
